@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3584e4" />
+      <stop offset="50%" stop-color="#1c71d8" />
+      <stop offset="100%" stop-color="#1a5fb4" />
+    </linearGradient>
+
+    <!-- Card Gradient -->
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#e8edf2" />
+    </linearGradient>
+
+    <!-- Accent Gradient -->
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#78aeed" />
+      <stop offset="100%" stop-color="#3584e4" />
+    </linearGradient>
+
+    <!-- Drop Shadow Filter -->
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="125%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#000000" flood-opacity="0.25" />
+    </filter>
+
+    <filter id="subtleShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000000" flood-opacity="0.15" />
+    </filter>
+  </defs>
+
+  <!-- Outer Squircle / Base -->
+  <rect x="8" y="8" width="112" height="112" rx="28" fill="url(#bgGrad)" filter="url(#shadow)" />
+
+  <!-- Inner Subtle Border -->
+  <rect x="8.5" y="8.5" width="111" height="111" rx="27.5" fill="none" stroke="rgba(255, 255, 255, 0.25)" stroke-width="1.5" />
+
+  <!-- Paper Sheet Card -->
+  <rect x="24" y="24" width="80" height="80" rx="16" fill="url(#cardGrad)" filter="url(#subtleShadow)" />
+
+  <!-- Document Header Glow Line -->
+  <rect x="36" y="38" width="30" height="5" rx="2.5" fill="#1c71d8" />
+  
+  <!-- Markdown "M" Symbol -->
+  <path d="M 36,54 L 36,78 L 43,78 L 49,67 L 55,78 L 62,78 L 62,54 L 56,54 L 56,70 L 51,61 L 47,61 L 42,70 L 42,54 Z" fill="#1c71d8" />
+
+  <!-- Down Arrow (Reader / Flow Icon) -->
+  <path d="M 77,54 L 85,54 L 85,67 L 91,67 L 81,78 L 71,67 L 77,67 Z" fill="#3584e4" />
+
+  <!-- Minimal Decorative Status Dots -->
+  <circle cx="88" cy="38" r="3" fill="#62a0ea" />
+  <circle cx="80" cy="38" r="3" fill="#99c1f1" />
+</svg>

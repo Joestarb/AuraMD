@@ -1,0 +1,21 @@
+[Desktop Entry]
+Name=Aura Markdown
+GenericName=Markdown Reader
+GenericName[es]=Lector de Markdown
+Comment=Modern, minimalist Markdown reader for Linux
+Comment[es]=Lector de Markdown moderno y minimalista para Linux
+Exec=auramd %F
+Icon=io.github.auramd.AuraMD
+Terminal=false
+Type=Application
+Categories=Office;Utility;Viewer;TextEditor;
+MimeType=text/markdown;text/x-markdown;text/plain;
+Keywords=markdown;md;reader;viewer;minimalist;gnome;adwaita;
+StartupNotify=true
+StartupWMClass=io.github.auramd.AuraMD
+Actions=NewWindow;
+
+[Desktop Action NewWindow]
+Name=New Window
+Name[es]=Nueva ventana
+Exec=auramd

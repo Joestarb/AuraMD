@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="{{LANG}}" data-theme="{{THEME}}" data-font="{{FONT_FAMILY}}" data-width="{{READING_WIDTH}}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraMD</title>
+    
+    <!-- KaTeX CSS -->
+    <link rel="stylesheet" href="{{VENDOR_URI}}/katex.min.css">
+    
+    <!-- Bundled Offline Libraries -->
+    <script src="{{VENDOR_URI}}/marked.min.js"></script>
+    <script src="{{VENDOR_URI}}/highlight.min.js"></script>
+    <script src="{{VENDOR_URI}}/katex.min.js"></script>
+    <script src="{{VENDOR_URI}}/auto-render.min.js"></script>
+    <script src="{{VENDOR_URI}}/mermaid.min.js"></script>
+
+    <style>
+        :root {
+            --font-size: {{FONT_SIZE}}px;
+            --line-height: 1.68;
+            
+            /* Light theme (Adwaita Light) */
+            --bg-color: #fafafa;
+            --content-bg: #ffffff;
+            --text-color: #24292f;
+            --text-muted: #57606a;
+            --heading-color: #1a1e24;
+            --border-color: rgba(0, 0, 0, 0.1);
+            --border-subtle: rgba(0, 0, 0, 0.05);
+            --code-bg: #f6f8fa;
+            --code-border: #d0d7de;
+            --card-bg: #ffffff;
+            --accent-color: #1c71d8;
+            --accent-hover: #1558ab;
+            --accent-subtle: rgba(28, 113, 216, 0.08);
+            --blockquote-border: #1c71d8;
+            --blockquote-bg: rgba(28, 113, 216, 0.04);
+            --table-stripe: #f8f9fa;
+            --table-border: #d8dee4;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+            
+            /* Alerts */
+            --alert-note-bg: #ddf4ff;
+            --alert-note-border: #54aeff;
+            --alert-note-text: #0969da;
+            
+            --alert-tip-bg: #dafbe1;
+            --alert-tip-border: #4ac26b;
+            --alert-tip-text: #1a7f37;
+            
+            --alert-important-bg: #fbefff;
+            --alert-important-border: #c297ff;
+            --alert-important-text: #8250df;
+            
+            --alert-warn-bg: #fff8c5;
+            --alert-warn-border: #d4a72c;
+            --alert-warn-text: #9a6700;
+            
+            --alert-caution-bg: #ffebe9;
+            --alert-caution-border: #ff8182;
+            --alert-caution-text: #cf222e;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            html[data-theme="system"] {
+                --bg-color: #1e1e1e;
+                --content-bg: #242424;
+                --text-color: #e6edf3;
+                --text-muted: #8b949e;
+                --heading-color: #f0f6fc;
+                --border-color: rgba(255, 255, 255, 0.12);
+                --border-subtle: rgba(255, 255, 255, 0.06);
+                --code-bg: #161b22;
+                --code-border: #30363d;
+                --card-bg: #242424;
+                --accent-color: #78aeed;
+                --accent-hover: #99c1f1;
+                --accent-subtle: rgba(120, 174, 237, 0.12);
+                --blockquote-border: #78aeed;
+                --blockquote-bg: rgba(120, 174, 237, 0.06);
+                --table-stripe: #21262d;
+                --table-border: #30363d;
+                --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+                --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+                
+                --alert-note-bg: rgba(56, 139, 253, 0.15);
+                --alert-note-border: #388bfd;
+                --alert-note-text: #58a6ff;
+                
+                --alert-tip-bg: rgba(46, 160, 67, 0.15);
+                --alert-tip-border: #2ea043;
+                --alert-tip-text: #3fb950;
+                
+                --alert-important-bg: rgba(163, 113, 247, 0.15);
+                --alert-important-border: #a371f7;
+                --alert-important-text: #bc8cff;
+                
+                --alert-warn-bg: rgba(187, 128, 9, 0.15);
+                --alert-warn-border: #bb8009;
+                --alert-warn-text: #d29922;
+                
+                --alert-caution-bg: rgba(248, 81, 73, 0.15);
+                --alert-caution-border: #f85149;
+                --alert-caution-text: #ff7b72;
+            }
+        }
+
+        html[data-theme="dark"] {
+            --bg-color: #1e1e1e;
+            --content-bg: #242424;
+            --text-color: #e6edf3;
+            --text-muted: #8b949e;
+            --heading-color: #f0f6fc;
+            --border-color: rgba(255, 255, 255, 0.12);
+            --border-subtle: rgba(255, 255, 255, 0.06);
+            --code-bg: #161b22;
+            --code-border: #30363d;
+            --card-bg: #242424;
+            --accent-color: #78aeed;
+            --accent-hover: #99c1f1;
+            --accent-subtle: rgba(120, 174, 237, 0.12);
+            --blockquote-border: #78aeed;
+            --blockquote-bg: rgba(120, 174, 237, 0.06);
+            --table-stripe: #21262d;
+            --table-border: #30363d;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+            
+            --alert-note-bg: rgba(56, 139, 253, 0.15);
+            --alert-note-border: #388bfd;
+            --alert-note-text: #58a6ff;
+            
+            --alert-tip-bg: rgba(46, 160, 67, 0.15);
+            --alert-tip-border: #2ea043;
+            --alert-tip-text: #3fb950;
+            
+            --alert-important-bg: rgba(163, 113, 247, 0.15);
+            --alert-important-border: #a371f7;
+            --alert-important-text: #bc8cff;
+            
+            --alert-warn-bg: rgba(187, 128, 9, 0.15);
+            --alert-warn-border: #bb8009;
+            --alert-warn-text: #d29922;
+            
+            --alert-caution-bg: rgba(248, 81, 73, 0.15);
+            --alert-caution-border: #f85149;
+            --alert-caution-text: #ff7b72;
+        }
+
+        html[data-font="sans"] {
+            font-family: -apple-system, BlinkMacSystemFont, "Cantarell", "Ubuntu", "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+        }
+        html[data-font="serif"] {
+            font-family: "Merriweather", "Georgia", "Source Serif Pro", "Times New Roman", serif;
+        }
+        html[data-font="mono"] {
+            font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", monospace;
+        }
+
+        /* Reading Width Container */
+        .markdown-container {
+            margin: 0 auto;
+            padding: 3rem 2.5rem 6rem;
+            transition: max-width 0.25s ease;
+        }
+        html[data-width="compact"] .markdown-container {
+            max-width: 680px;
+        }
+        html[data-width="standard"] .markdown-container {
+            max-width: 840px;
+        }
+        html[data-width="wide"] .markdown-container {
+            max-width: 1080px;
+        }
+        html[data-width="full"] .markdown-container {
+            max-width: 95%;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-size: var(--font-size);
+            line-height: var(--line-height);
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+            scroll-behavior: smooth;
+        }
+
+        /* Selection */
+        ::selection {
+            background: var(--accent-subtle);
+            color: var(--accent-color);
+        }
+
+        /* Headings */
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--heading-color);
+            font-weight: 650;
+            margin-top: 1.8em;
+            margin-bottom: 0.6em;
+            line-height: 1.3;
+            position: relative;
+        }
+        h1 {
+            font-size: 2.15em;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.35em;
+            margin-top: 0.5em;
+        }
+        h2 {
+            font-size: 1.6em;
+            border-bottom: 1px solid var(--border-subtle);
+            padding-bottom: 0.25em;
+        }
+        h3 { font-size: 1.3em; }
+        h4 { font-size: 1.1em; }
+        h5 { font-size: 0.95em; }
+        h6 { font-size: 0.85em; text-transform: uppercase; color: var(--text-muted); }
+
+        /* Heading Anchor Link */
+        .heading-anchor {
+            opacity: 0;
+            margin-left: 0.3em;
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: normal;
+            transition: opacity 0.15s ease;
+        }
+        h1:hover .heading-anchor,
+        h2:hover .heading-anchor,
+        h3:hover .heading-anchor,
+        h4:hover .heading-anchor,
+        h5:hover .heading-anchor,
+        h6:hover .heading-anchor {
+            opacity: 0.8;
+        }
+
+        /* Paragraphs & Text */
+        p {
+            margin-top: 0;
+            margin-bottom: 1.1em;
+        }
+        strong {
+            font-weight: 650;
+            color: var(--heading-color);
+        }
+        em {
+            font-style: italic;
+        }
+        del {
+            color: var(--text-muted);
+            text-decoration: line-through;
+        }
+
+        /* Links */
+        a {
+            color: var(--accent-color);
+            text-decoration: underline;
+            text-decoration-thickness: 1px;
+            text-underline-offset: 3px;
+            transition: color 0.15s ease, text-decoration-color 0.15s ease;
+        }
+        a:hover {
+            color: var(--accent-hover);
+            text-decoration-thickness: 2px;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin-top: 0;
+            margin-bottom: 1.1em;
+            padding-left: 1.6em;
+        }
+        li {
+            margin-bottom: 0.35em;
+        }
+        li > p {
+            margin-bottom: 0.35em;
+        }
+
+        /* Task lists */
+        ul.task-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        li.task-list-item {
+            display: flex;
+            align-items: baseline;
+            gap: 0.6em;
+            margin-bottom: 0.4em;
+        }
+        li.task-list-item input[type="checkbox"] {
+            margin: 0;
+            width: 1.1em;
+            height: 1.1em;
+            accent-color: var(--accent-color);
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        /* Blockquotes */
+        blockquote {
+            margin: 1.2em 0;
+            padding: 0.8em 1.2em;
+            border-left: 4px solid var(--blockquote-border);
+            background-color: var(--blockquote-bg);
+            border-radius: 0 8px 8px 0;
+            color: var(--text-muted);
+        }
+        blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Alerts / Callouts */
+        .markdown-alert {
+            margin: 1.2em 0;
+            padding: 0.9em 1.2em;
+            border-left: 4px solid;
+            border-radius: 6px;
+        }
+        .markdown-alert-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5em;
+            font-weight: 650;
+            margin-bottom: 0.4em;
+        }
+        .markdown-alert-title svg {
+            width: 1.1em;
+            height: 1.1em;
+            fill: currentColor;
+        }
+        .markdown-alert.alert-note {
+            background-color: var(--alert-note-bg);
+            border-color: var(--alert-note-border);
+            color: var(--text-color);
+        }
+        .markdown-alert.alert-note .markdown-alert-title {
+            color: var(--alert-note-text);
+        }
+        .markdown-alert.alert-tip {
+            background-color: var(--alert-tip-bg);
+            border-color: var(--alert-tip-border);
+            color: var(--text-color);
+        }
+        .markdown-alert.alert-tip .markdown-alert-title {
+            color: var(--alert-tip-text);
+        }
+        .markdown-alert.alert-important {
+            background-color: var(--alert-important-bg);
+            border-color: var(--alert-important-border);
+            color: var(--text-color);
+        }
+        .markdown-alert.alert-important .markdown-alert-title {
+            color: var(--alert-important-text);
+        }
+        .markdown-alert.alert-warning {
+            background-color: var(--alert-warn-bg);
+            border-color: var(--alert-warn-border);
+            color: var(--text-color);
+        }
+        .markdown-alert.alert-warning .markdown-alert-title {
+            color: var(--alert-warn-text);
+        }
+        .markdown-alert.alert-caution {
+            background-color: var(--alert-caution-bg);
+            border-color: var(--alert-caution-border);
+            color: var(--text-color);
+        }
+        .markdown-alert.alert-caution .markdown-alert-title {
+            color: var(--alert-caution-text);
+        }
+
+        /* Inline code */
+        code:not(pre code) {
+            font-family: "JetBrains Mono", "Fira Code", monospace;
+            font-size: 0.88em;
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            padding: 0.15em 0.4em;
+            border-radius: 4px;
+            color: var(--accent-color);
+        }
+
+        /* Code Blocks */
+        .code-block-wrapper {
+            position: relative;
+            margin: 1.4em 0;
+            border-radius: 8px;
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+        .code-block-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.4em 0.8em;
+            background-color: rgba(0, 0, 0, 0.03);
+            border-bottom: 1px solid var(--border-subtle);
+            font-size: 0.8em;
+            color: var(--text-muted);
+            user-select: none;
+        }
+        html[data-theme="dark"] .code-block-header {
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+        .copy-code-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            border-radius: 4px;
+            padding: 0.2em 0.6em;
+            font-size: 0.85em;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35em;
+            transition: all 0.15s ease;
+        }
+        .copy-code-btn:hover {
+            background-color: var(--accent-subtle);
+            color: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+        .copy-code-btn.copied {
+            background-color: var(--alert-tip-bg);
+            color: var(--alert-tip-text);
+            border-color: var(--alert-tip-border);
+        }
+        pre {
+            margin: 0;
+            padding: 1em;
+            overflow-x: auto;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+        pre code {
+            font-family: "JetBrains Mono", "Fira Code", monospace;
+            background: transparent !important;
+            padding: 0 !important;
+        }
+
+        /* Tables */
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            margin: 1.4em 0;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: var(--shadow-sm);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.92em;
+        }
+        th, td {
+            padding: 0.65em 1em;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        th {
+            background-color: var(--code-bg);
+            font-weight: 650;
+            color: var(--heading-color);
+        }
+        tr:nth-child(even) {
+            background-color: var(--table-stripe);
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Horizontal rule */
+        hr {
+            border: none;
+            height: 1px;
+            background-color: var(--border-color);
+            margin: 2.2em 0;
+        }
+
+        /* Images */
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 1.2em 0;
+            box-shadow: var(--shadow-sm);
+            display: block;
+        }
+
+        /* KaTeX Math equations */
+        .katex-display {
+            margin: 1.2em 0;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 0.5em 0;
+        }
+
+        /* Mermaid Diagrams */
+        .mermaid-wrapper {
+            display: flex;
+            justify-content: center;
+            margin: 1.4em 0;
+            padding: 1.2em;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow-x: auto;
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Footnotes */
+        .footnotes {
+            margin-top: 3em;
+            padding-top: 1.5em;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.88em;
+            color: var(--text-muted);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(128, 128, 128, 0.25);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(128, 128, 128, 0.45);
+        }
+    </style>
+</head>
+<body>
+    <main class="markdown-container" id="content">
+        <!-- Rendered markdown goes here -->
+    </main>
+
+    <script>
+        const RAW_MD = {{RAW_MD_JSON}};
+        const COPY_LABEL = "{{COPY_LABEL}}";
+        const COPIED_LABEL = "{{COPIED_LABEL}}";
+        const INITIAL_SCROLL = {{PRESERVE_SCROLL}};
+
+        // Notify Python bridge
+        function postBridgeMessage(data) {
+            if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.app) {
+                window.webkit.messageHandlers.app.postMessage(JSON.stringify(data));
+            }
+        }
+
+        // Slugify helper
+        function slugify(text) {
+            return text
+                .toLowerCase()
+                .trim()
+                .replace(/<[^>]+>/g, '')
+                .replace(/[^\w\s-]/g, '')
+                .replace(/[\s_-]+/g, '-')
+                .replace(/^-+|-+$/g, '');
+        }
+
+        // Custom Marked Renderer
+        const renderer = new marked.Renderer();
+        const headings = [];
+
+        renderer.heading = function(text, level, raw) {
+            const plainText = (raw || text || '').replace(/<[^>]+>/g, '').trim();
+            const id = slugify(plainText) || 'heading-' + (headings.length + 1);
+            
+            headings.push({
+                id: id,
+                text: plainText,
+                level: level
+            });
+
+            return `<h${level} id="${id}">${text}<a href="#${id}" class="heading-anchor" aria-hidden="true">#</a></h${level}>`;
+        };
+
+        renderer.table = function(header, body) {
+            return `<div class="table-wrapper"><table><thead>${header}</thead><tbody>${body}</tbody></table></div>`;
+        };
+
+        // Process GitHub alerts in blockquotes
+        function processAlerts(html) {
+            const alertTypes = {
+                'NOTE': { class: 'alert-note', title: 'Note', icon: '<path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm6.5-.25A.75.75 0 017.25 7h1a.75.75 0 01.75.75v2.75h.25a.75.75 0 010 1.5h-2a.75.75 0 010-1.5h.25v-2h-.25a.75.75 0 01-.75-.75zM8 6a1 1 0 100-2 1 1 0 000 2z"/>' },
+                'TIP': { class: 'alert-tip', title: 'Tip', icon: '<path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 01-1.484.21c-.04-.29-.163-.554-.34-.811-.186-.268-.42-.544-.658-.826l-.215-.254C3.123 7.64 2.5 6.742 2.5 5.25 2.5 2.41 4.792 0 8 0s5.5 2.41 5.5 5.25c0 1.492-.623 2.39-1.294 3.19l-.215.254c-.238.282-.472.558-.658.826-.177.257-.3.52-.34.81a.75.75 0 01-1.484-.21c.084-.594.337-1.079.621-1.49.203-.292.45-.584.673-.848l.214-.253c.56-.679.984-1.32.984-2.304 0-2.06-1.637-3.75-4-3.75zM6 13a1 1 0 011-1h2a1 1 0 011 1v.5a.5.5 0 01-.5.5h-3a.5.5 0 01-.5-.5V13z"/>' },
+                'IMPORTANT': { class: 'alert-important', title: 'Important', icon: '<path d="M0 8a8 8 0 1116 0A8 8 0 010 8zm8-6.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM6.5 7.75A.75.75 0 017.25 7h1.5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-2.75h-.75a.75.75 0 01-.75-.75zM8 6a1 1 0 100-2 1 1 0 000 2z"/>' },
+                'WARNING': { class: 'alert-warning', title: 'Warning', icon: '<path d="M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0114.082 15H1.918a1.75 1.75 0 01-1.543-2.575L6.457 1.047zM8 4a.75.75 0 00-.75.75v4.5a.75.75 0 001.5 0v-4.5A.75.75 0 008 4zm0 8a1 1 0 100-2 1 1 0 000 2z"/>' },
+                'CAUTION': { class: 'alert-caution', title: 'Caution', icon: '<path d="M4.47.04a1.75 1.75 0 00-1.238.51L.51 3.272A1.75 1.75 0 000 4.51v6.98c0 .464.184.91.51 1.237l2.722 2.723a1.75 1.75 0 001.238.51h6.98c.464 0 .91-.184 1.237-.51l2.723-2.722a1.75 1.75 0 00.51-1.238V4.51a1.75 1.75 0 00-.51-1.238L12.728.51A1.75 1.75 0 0011.49 0H4.47zm.78 1.5h6.49l2.72 2.72v6.48l-2.72 2.72H5.25L2.53 10.74V4.26L5.25 1.54zM8 4a.75.75 0 00-.75.75v3.5a.75.75 0 001.5 0v-3.5A.75.75 0 008 4zm0 7a1 1 0 100-2 1 1 0 000 2z"/>' }
+            };
+
+            return html.replace(/<blockquote>\s*<p>\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]([\s\S]*?)<\/blockquote>/gi, (match, type, content) => {
+                const info = alertTypes[type.toUpperCase()] || alertTypes['NOTE'];
+                return `<div class="markdown-alert ${info.class}">
+                    <div class="markdown-alert-title">
+                        <svg viewBox="0 0 16 16">${info.icon}</svg>
+                        <span>${info.title}</span>
+                    </div>
+                    <div><p>${content.trim()}</div>
+                </div>`;
+            });
+        }
+
+        // Render Markdown
+        function renderMarkdown() {
+            marked.use({
+                gfm: true,
+                breaks: false,
+                renderer: renderer
+            });
+
+            headings.length = 0;
+            let rawHtml = marked.parse(RAW_MD);
+            let processedHtml = processAlerts(rawHtml);
+            
+            document.getElementById('content').innerHTML = processedHtml;
+
+            // Highlight syntax in code blocks & add copy buttons
+            document.querySelectorAll('pre code').forEach((block) => {
+                // Detect mermaid
+                if (block.classList.contains('language-mermaid')) {
+                    const parent = block.parentElement;
+                    const code = block.textContent;
+                    const mermaidDiv = document.createElement('div');
+                    mermaidDiv.className = 'mermaid-wrapper';
+                    mermaidDiv.innerHTML = `<div class="mermaid">${code}</div>`;
+                    parent.replaceWith(mermaidDiv);
+                    return;
+                }
+
+                hljs.highlightElement(block);
+                
+                // Wrap in code block container with copy button
+                const pre = block.parentElement;
+                if (!pre.parentElement.classList.contains('code-block-wrapper')) {
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'code-block-wrapper';
+                    
+                    // Extract lang name
+                    let langName = '';
+                    block.classList.forEach(cls => {
+                        if (cls.startsWith('language-')) {
+                            langName = cls.replace('language-', '');
+                        }
+                    });
+
+                    const header = document.createElement('div');
+                    header.className = 'code-block-header';
+                    header.innerHTML = `<span>${langName.toUpperCase() || 'CODE'}</span>
+                        <button class="copy-code-btn" type="button" title="Copy code">
+                            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
+                                <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z"/>
+                                <path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z"/>
+                            </svg>
+                            <span>${COPY_LABEL}</span>
+                        </button>`;
+                    
+                    const btn = header.querySelector('.copy-code-btn');
+                    btn.addEventListener('click', () => {
+                        navigator.clipboard.writeText(block.textContent).then(() => {
+                            btn.classList.add('copied');
+                            btn.querySelector('span').innerText = COPIED_LABEL;
+                            postBridgeMessage({ type: 'toast', message: 'copied_code' });
+                            setTimeout(() => {
+                                btn.classList.remove('copied');
+                                btn.querySelector('span').innerText = COPY_LABEL;
+                            }, 2000);
+                        });
+                    });
+
+                    pre.parentNode.insertBefore(wrapper, pre);
+                    wrapper.appendChild(header);
+                    wrapper.appendChild(pre);
+                }
+            });
+
+            // Render math equations (LaTeX KaTeX)
+            try {
+                renderMathInElement(document.getElementById('content'), {
+                    delimiters: [
+                        { left: '$$', right: '$$', display: true },
+                        { left: '$', right: '$', display: false },
+                        { left: '\\(', right: '\\)', display: false },
+                        { left: '\\[', right: '\\]', display: true }
+                    ],
+                    throwOnError: false
+                });
+            } catch (err) {
+                console.error("KaTeX render error:", err);
+            }
+
+            // Render Mermaid diagrams
+            try {
+                const isDark = document.documentElement.getAttribute('data-theme') === 'dark' ||
+                    (document.documentElement.getAttribute('data-theme') === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                mermaid.initialize({
+                    startOnLoad: false,
+                    theme: isDark ? 'dark' : 'default',
+                    securityLevel: 'loose'
+                });
+                mermaid.run({
+                    nodes: document.querySelectorAll('.mermaid')
+                });
+            } catch (err) {
+                console.error("Mermaid error:", err);
+            }
+
+            // Send Outline headings to Python
+            postBridgeMessage({
+                type: 'outline',
+                headings: headings
+            });
+
+            // Restore scroll position
+            if (INITIAL_SCROLL > 0) {
+                window.scrollTo({ top: INITIAL_SCROLL, behavior: 'instant' });
+            }
+
+            // Scroll spy for active heading
+            setupScrollSpy();
+        }
+
+        // Intercept external links & anchor links
+        document.addEventListener('click', (e) => {
+            const link = e.target.closest('a');
+            if (!link) return;
+            const href = link.getAttribute('href');
+            if (!href) return;
+
+            if (href.startsWith('http://') || href.startsWith('https://') || href.startsWith('mailto:')) {
+                e.preventDefault();
+                postBridgeMessage({ type: 'open_external', url: href });
+            } else if (href.startsWith('#')) {
+                e.preventDefault();
+                const targetId = href.substring(1);
+                const elem = document.getElementById(targetId);
+                if (elem) {
+                    elem.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        });
+
+        // Scroll spy
+        function setupScrollSpy() {
+            let timeout;
+            window.addEventListener('scroll', () => {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => {
+                    // Report current scroll position
+                    postBridgeMessage({ type: 'scroll_pos', pos: window.scrollY });
+                    
+                    // Find heading currently near top of viewport
+                    let currentHeading = null;
+                    const headingElems = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+                    for (let el of headingElems) {
+                        const rect = el.getBoundingClientRect();
+                        if (rect.top <= 120) {
+                            currentHeading = el.id;
+                        } else {
+                            break;
+                        }
+                    }
+                    if (currentHeading) {
+                        postBridgeMessage({ type: 'active_heading', id: currentHeading });
+                    }
+                }, 60);
+            });
+        }
+
+        // Python can trigger scroll to heading
+        window.scrollToHeading = function(id) {
+            const elem = document.getElementById(id);
+            if (elem) {
+                elem.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        };
+
+        // Python can update theme dynamically
+        window.setAppTheme = function(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+        };
+
+        // Python can update font dynamically
+        window.setAppFont = function(font) {
+            document.documentElement.setAttribute('data-font', font);
+        };
+
+        // Python can update reading width dynamically
+        window.setAppWidth = function(width) {
+            document.documentElement.setAttribute('data-width', width);
+        };
+
+        // Python can update font size dynamically
+        window.setAppFontSize = function(size) {
+            document.documentElement.style.setProperty('--font-size', size + 'px');
+        };
+
+        // Run on load
+        window.addEventListener('DOMContentLoaded', renderMarkdown);
+    </script>
+</body>
+</html>
